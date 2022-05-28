@@ -1,5 +1,6 @@
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { FerramentasDeDetalhe } from '../../shared/components';
@@ -7,9 +8,17 @@ import { VTextField } from '../../shared/forms';
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 
+interface IFormData {
+  email: string;
+  nomeCompleto: string;
+  cidadeId: string;
+}
+
 export const DetalheDePessoas: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>();
   const navigate = useNavigate();
+
+  const formRef = useRef<FormHandles>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState('');
@@ -31,8 +40,8 @@ export const DetalheDePessoas: React.FC = () => {
     }
   }, [id]);
 
-  const handleSave = () => {
-    console.log('Save');
+  const handleSave = (dados: IFormData ) => {
+    console.log(dados);
   };
 
   const handleDelete = (id: number) => {
@@ -57,7 +66,8 @@ export const DetalheDePessoas: React.FC = () => {
           mostrarBotaoSalvarEVoltar
           mostrarBotaoNovo={id !== 'nova'}
           mostrarBotaoApagar={id !== 'nova'}
-          aoClicarEmSalvar={handleSave}
+
+          aoClicarEmSalvar={() => formRef.current?.submitForm()}
           aoClicarEmSalvarEVoltar={handleSave}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
@@ -65,10 +75,12 @@ export const DetalheDePessoas: React.FC = () => {
         />
       }
     >
-      <Form onSubmit={(dados) => console.log(dados)}> 
-        <VTextField name='nomeCompleto' />
+      <Form  ref={formRef} onSubmit={(dados) => console.log(dados)}>
+        <VTextField name="nomeCompleto" />
+        <VTextField name="email" />
+        <VTextField name="cidadeId" />
 
-        <button type='submit'>Submit</button>
+        <button type="submit">Submit</button>
       </Form>
     </LayoutBaseDePagina>
   );
