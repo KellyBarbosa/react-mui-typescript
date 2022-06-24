@@ -80,9 +80,9 @@
     },
     {
       "id": 157,
-      "nomeCompleto": "Jorge",
+      "cidadeId": 5,
       "email": "jorginho@email.com",
-      "cidadeId": "5"
+      "nomeCompleto": "Jorge"
     }
   ]
 }
