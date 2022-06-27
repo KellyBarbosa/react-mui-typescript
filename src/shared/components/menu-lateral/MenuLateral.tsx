@@ -12,7 +12,11 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { useNavigate, useResolvedPath, useMatch } from 'react-router-dom';
-import { useAppThemeContext, useDrawerContext } from '../../contexts';
+import {
+  useAppThemeContext,
+  useAuthContext,
+  useDrawerContext,
+} from '../../contexts';
 
 interface IListItemLinkProps {
   label: string;
@@ -52,6 +56,7 @@ export const MenuLateral: React.FC = ({ children }) => {
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   const { toggleTheme } = useAppThemeContext();
+  const { logout } = useAuthContext();
 
   return (
     <>
@@ -106,12 +111,15 @@ export const MenuLateral: React.FC = ({ children }) => {
                 </ListItemIcon>
                 <ListItemText primary="Alternar tema" />
               </ListItemButton>
+              <ListItemButton onClick={logout}>
+                <ListItemIcon>
+                  <Icon>logout</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Sair" />
+              </ListItemButton>
             </List>
           </Box>
-
         </Box>
-
-        
       </Drawer>
 
       <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(28)}>
